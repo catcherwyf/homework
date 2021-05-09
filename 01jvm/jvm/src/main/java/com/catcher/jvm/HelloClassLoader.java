@@ -12,12 +12,13 @@ public class HelloClassLoader extends ClassLoader {
         Method method = clazz.getMethod("hello");
         method.invoke(object);
     }
-
+    @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
-        File file = new File("/Users/wyf/Desktop/java_adv/homework/01jvm/jvm/src/main/resources/Hello.xlass");
+//        File file = new File("/Users/wyf/Desktop/java_adv/homework/01jvm/jvm/src/main/resources/Hello.xlass");
         InputStream input = null;
         try{
-           input = new FileInputStream(file);
+//           input = new FileInputStream(file);
+           input = this.getClass().getClassLoader().getResourceAsStream(name + ".xlass");
            int length = input.available();
            byte[] bytes = new byte[length];
            input.read(bytes);
@@ -30,12 +31,13 @@ public class HelloClassLoader extends ClassLoader {
             e.printStackTrace();
             throw new ClassNotFoundException(name, e);
         }finally {
-            try {
-                input.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new ClassNotFoundException(name, e);
-            }
+            if(null != input)
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    throw new ClassNotFoundException(name, e);
+                }
         }
     }
 
