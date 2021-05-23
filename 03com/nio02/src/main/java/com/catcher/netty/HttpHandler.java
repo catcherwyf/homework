@@ -1,8 +1,8 @@
 package com.catcher.netty;
 
-import com.catcher.nio.client.ConnectHttpClient;
-import com.catcher.nio.client.ConnectNettyClient;
-import com.catcher.nio.client.ConnectOKClient;
+import com.catcher.client.ConnectHttpClient;
+import com.catcher.client.ConnectNettyClient;
+import com.catcher.client.ConnectOKClient;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
