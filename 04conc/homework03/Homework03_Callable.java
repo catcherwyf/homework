@@ -1,4 +1,4 @@
-package java0.conc0303;
+package java0.conc0303.homework03;
 
 import java.util.concurrent.*;
 
@@ -18,13 +18,15 @@ public class Homework03_Callable {
 
         // 在这里创建一个线程或线程池
         //ExecutorService es = Executors.newFixedThreadPool(1);
-        ExecutorService es = Executors.newCachedThreadPool();
-        MyCallable call = new MyCallable(result);
+        //ExecutorService es = Executors.newCachedThreadPool();
+        //ExecutorService es = Executors.newScheduledThreadPool(1);
+        ExecutorService es = Executors.newSingleThreadExecutor();
+        MyCallable call = new MyCallable();
         // 异步执行 下面方法
         //启动线程
-        Future future = es.submit(call);
+        Future<Integer> future = es.submit(call);
         // 确保  拿到result 并输出
-        result = (int) future.get();
+        result = future.get();
         System.out.println("异步计算结果为："+result);
         System.out.println("使用时间："+ (System.currentTimeMillis()-start) + " ms");
         
@@ -44,18 +46,11 @@ public class Homework03_Callable {
         return fibo(a-1) + fibo(a-2);
     }
     //实现Callable接口
-    private static class MyCallable implements Callable {
-
-        private int result;
-
-        public MyCallable(int result){
-            this.result = result;
-        }
+    private static class MyCallable implements Callable<Integer> {
 
         @Override
-        public Object call() throws Exception {
-            result = sum();
-            return result;
+        public Integer call() throws Exception {
+            return sum();
         }
     }
 }
