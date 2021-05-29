@@ -9,30 +9,29 @@ import java.util.concurrent.*;
  *
  * 一个简单的代码参考：
  */
-public class Homework03_Runnable {
+public class Homework03_CompletionService {
     
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         
         long start=System.currentTimeMillis();
+
         // 在这里创建一个线程或线程池，
         //ExecutorService es = Executors.newFixedThreadPool(1);
         //ExecutorService es = Executors.newCachedThreadPool();
         //ExecutorService es = Executors.newScheduledThreadPool(1);
         ExecutorService es = Executors.newSingleThreadExecutor();
-        int result = 0;
-        BackResult back = new BackResult(result);
-
         // 异步执行 下面方法
-        Future<BackResult> future = es.submit(new MyRunnable(back), back);
+        CompletionService<Integer> cs = new ExecutorCompletionService<Integer>(es);
+//        int result = sum(); //这是得到的返回值
+        Future<Integer> future = cs.submit(new MyCallable());
 
         // 确保  拿到result 并输出
-        result = future.get().getResult();
+        int result = future.get();
         System.out.println("异步计算结果为："+result);
          
         System.out.println("使用时间："+ (System.currentTimeMillis()-start) + " ms");
         
         // 然后退出main线程
-        es.shutdown();
     }
     
     private static int sum() {
@@ -44,33 +43,12 @@ public class Homework03_Runnable {
             return 1;
         return fibo(a-1) + fibo(a-2);
     }
-
-    private static class MyRunnable implements Runnable {
-        private BackResult result;
-        public MyRunnable(BackResult result) {
-            this.result = result;
-        }
+    //实现Callable接口
+    private static class MyCallable implements Callable<Integer> {
 
         @Override
-        public void run() {
-            //设置值
-            result.setResult(sum());
-        }
-    }
-    //内部类用来保存返回结果
-    private static class BackResult {
-        private int result;
-
-        public BackResult(int result){
-            this.result = result;
-        }
-
-        public void setResult(int result) {
-            this.result = result;
-        }
-
-        public int getResult() {
-            return result;
+        public Integer call() throws Exception {
+            return sum();
         }
     }
 }
