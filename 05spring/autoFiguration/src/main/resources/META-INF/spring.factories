@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.catcher.autoFiguration.example.WebAutoConfiguration,\
+com.catcher.autoFiguration.Entity.SchoolAutoConfiguration
+
