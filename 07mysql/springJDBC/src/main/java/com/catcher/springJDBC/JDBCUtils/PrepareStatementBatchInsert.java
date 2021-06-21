@@ -24,7 +24,7 @@ public class PrepareStatementBatchInsert {
             String insertSql = "INSERT INTO mall.order_info" +
                     "(order_num, user_id, consignee, address, phone, pay_way, card_id, pay_amount, order_amount," +
                     " discount_amount, order_time, pay_time, delivery_time, receipt_time, status, remark)" +
-                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             preparedStatement = connection.prepareStatement(insertSql);//建立执行对象
             for(int i = 0; i < 100; i++){
                 for (int j = 0; j < 10000; j++){
@@ -59,6 +59,8 @@ public class PrepareStatementBatchInsert {
             JDBCConnect.closeConnect(connection, preparedStatement, resultSet);
 //            HikariConnect.closeConnect(connection, preparedStatement, resultSet);
             Long endTime = System.currentTimeMillis();
+            //启用rewriteBatchedStatements=true参数27621ms
+            //启用rewriteBatchedStatements=true&useServerPrepStmts=true参数47485ms
             System.out.println("total:" + (endTime - startTime) + "ms");//139290ms
         }
     }
