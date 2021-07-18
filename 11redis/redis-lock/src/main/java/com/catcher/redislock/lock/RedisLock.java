@@ -3,7 +3,6 @@ package com.catcher.redislock.lock;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.params.SetParams;
 
 import java.util.Collections;
 import java.util.UUID;
@@ -14,11 +13,8 @@ public class RedisLock {
     private JedisPool jedisPool = new JedisPool();
 
     public boolean lock(String lockValue, String id, int seconds) {
-        SetParams sets = new SetParams();
-        sets.nx();
-        sets.px(seconds);
         try(Jedis jedis = jedisPool.getResource()) {
-            String result = jedis.set(lockValue, id, sets);
+            String result = jedis.set(lockValue, lockValue, "NX", "EX", seconds);
             if("OK".equals(result)){
                 return true;
             }else{

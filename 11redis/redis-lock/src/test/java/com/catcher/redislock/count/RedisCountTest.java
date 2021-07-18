@@ -68,6 +68,7 @@ class RedisCountTest {
                 @Override
                 public void run() {
                     if(stock >= 10L){
+                        //set test-1 10 redis设置库存为10
                         lock1.acquireLock("test-1", id, 1);
                         System.out.println("获取锁："+id);
                         count.setIncrBy("test-1", -1, 1);
