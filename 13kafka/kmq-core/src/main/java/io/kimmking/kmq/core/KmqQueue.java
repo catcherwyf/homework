@@ -26,13 +26,14 @@ public class KmqQueue {
         return true;
     }
 
-    public KmqMessage get(String group){
-        int index = offset.getOrDefault(group, new AtomicInteger(-1)).incrementAndGet();
+    public KmqMessage get(String topic){
+        int index = offset.getOrDefault(topic, new AtomicInteger(-1)).incrementAndGet();
         if (writeIndex == 0 || index >= queue.size()){
             return null;
         }
         return queue.get(index);
     }
+
 
     public boolean isEmpty() {
         return writeIndex == 0 || writeIndex >= queue.size();
