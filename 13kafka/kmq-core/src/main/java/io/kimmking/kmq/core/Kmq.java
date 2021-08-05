@@ -1,10 +1,12 @@
 package io.kimmking.kmq.core;
 
 import lombok.SneakyThrows;
+import org.springframework.stereotype.Service;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+@Service
 public final class Kmq {
 
     public Kmq(String topic, int capacity) {
@@ -26,7 +28,7 @@ public final class Kmq {
         return queue.put(message);
     }
 
-    public KmqMessage poll() {
+    public KmqMessage poll(String topic) {
         return queue.get(topic);
     }
 
